@@ -1,0 +1,42 @@
+periodics:
+- interval: 10m
+  agent: kubernetes
+  name: mynamespace-echo-test
+  spec:
+    containers:
+    - image: alpine
+      command: ["/bin/date"]
+
+presubmits:
+  rabugopsl/installer:
+  - name: rabugopsl-mynamespace-prow-presubmit
+    trigger: "(?m)^/test this"
+    rerun_command: "/test this"
+    context: rabugopsl-prow-presubmit
+    always_run: true
+    skip_report: false
+    agent: kubernetes
+    spec:
+      containers:
+        - image: alpine
+          command: ["/bin/printenv"]
+  - name: rabugo-tflint
+    trigger: "(?m)^/tflint"
+    rerun_command: "/tflint"
+    context: rabugo-tflint
+    always_run: true
+    skip_report: true
+    agent: kubernetes
+    spec:
+      containers:
+      - image: quay.io/coreos/tflint
+
+
+postsubmits:
+  rabugopsl/installer:
+  - name: rabugopsl-mynamespace-prow-postsubmit
+    agent: kubernetes
+    spec:
+      containers:
+      - image: alpine
+        command: ["/bin/printenv"]

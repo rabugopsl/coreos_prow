@@ -1,0 +1,11 @@
+plugins:
+  rabugopsl/prow_test:
+  - size
+  - cat
+
+  rabugopsl/installer:
+  - size
+  - cat
+  - lgtm
+  - lifecycle
+  - trigger
